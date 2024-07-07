@@ -1,18 +1,20 @@
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import './PostCard.css'
+import { Link } from 'react-router-dom'
 
-export default function PostCard() {
+export default function PostCard({post}) {
   return (
     <Card className='card'>
-      <Card.Img variant="top" src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1420&q=80" />
+      <Card.Img variant="top" src={post.image} />
       <Card.Body>
-        <Card.Title>Card Title</Card.Title>
+        <Card.Title>{post.title}</Card.Title>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          {post.content.slice(0, 100)}...
         </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Link to={`/post/${post.id}`}>
+            <Button variant="primary">View more</Button>
+        </Link>
       </Card.Body>
     </Card>
   )
