@@ -1,47 +1,53 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useState,useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import baseurl from '../common';
-export default function AddPost() {
-  var navigate=useNavigate();
-  var [title,setTitle]=useState();
-  var [image,setImage]=useState();
-  var [content,setContent]=useState();
-  var [token,setToken]=useState(localStorage.getItem('srt'));
 
-  useEffect(()=>{
-    let authToken=localStorage.getItem('srt');
-    if(!authToken){
+export default function AddPost() {
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [image, setImage] = useState('');
+  const [content, setContent] = useState('');
+  const authToken = localStorage.getItem('srt');
+
+  const [token, setToken] = useState(localStorage.getItem('srt'));
+
+  useEffect(() => {
+    if (!authToken) {
       navigate('/login');
     }
     setToken(authToken);
-  },[])
+  }, [authToken, navigate]);
 
-  async function createPost(event){
+  async function createPost(event) {
     event.preventDefault();
-    await fetch(`${baseurl}/post`,{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify(
-        {id:Math.floor(Math.random()*1000),
-        title:title,
-        image:image,
-        content:content
-        }
-      )
-    }
-    ).then(
-      res=>{
-        console.log(res);
+    try {
+      const response = await fetch(`${baseurl}/post`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`
+          
+        },
+        body: JSON.stringify({
+          title: title,
+          image: image,
+          content: content
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-     
 
-
-    );
+      const result = await response.json();
+      console.log("result of the request is:"+result);
+      // Navigate to the home page or another page after successful post creation
+      navigate('/');
+    } catch (error) {
+      console.error('Error creating post:', error);
+    }
 
   }
 
@@ -77,7 +83,7 @@ export default function AddPost() {
           <Button className='m-3' variant="primary" type="submit" onClick={createPost}>
             Submit
           </Button>
-          <Link to='/post'>
+          <Link to='/'>
               <Button className='m-3' variant="primary">Go Home</Button>
            </Link>
         </Form>
