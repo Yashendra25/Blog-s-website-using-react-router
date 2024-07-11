@@ -1,16 +1,27 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import baseurl from '../common';
 export default function AddPost() {
+  var navigate=useNavigate();
   var [title,setTitle]=useState();
   var [image,setImage]=useState();
   var [content,setContent]=useState();
+  var [token,setToken]=useState(localStorage.getItem('srt'));
+
+  useEffect(()=>{
+    let authToken=localStorage.getItem('srt');
+    if(!authToken){
+      navigate('/login');
+    }
+    setToken(authToken);
+  },[])
 
   async function createPost(event){
     event.preventDefault();
-   fetch('http://localhost:3005/api/v1/post',
-    {
+    await fetch(`${baseurl}/post`,{
       method:'POST',
       headers:{
         'Content-Type':'application/json'
@@ -66,7 +77,7 @@ export default function AddPost() {
           <Button className='m-3' variant="primary" type="submit" onClick={createPost}>
             Submit
           </Button>
-          <Link to='/'>
+          <Link to='/post'>
               <Button className='m-3' variant="primary">Go Home</Button>
            </Link>
         </Form>
