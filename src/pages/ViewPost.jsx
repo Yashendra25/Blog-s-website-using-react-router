@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import baseurl from '../common'
 export default function ViewPost() {
   var { postId } = useParams();
+  var navigate = useNavigate()
   var [post, setPost] = useState();
   useEffect(() => {
     async function getPost() {
