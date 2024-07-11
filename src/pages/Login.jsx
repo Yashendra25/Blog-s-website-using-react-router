@@ -26,7 +26,7 @@ export default function Login() {
             token=>{
                 if(token!='Auth failed!!'){
                     localStorage.setItem('srt',token);
-                    Navigate('/post');
+                    Navigate('/');
                 }
                 else{
                     alert('Invalid username or password');
