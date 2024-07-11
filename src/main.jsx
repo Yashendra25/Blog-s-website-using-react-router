@@ -5,9 +5,15 @@ import './index.css'
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import ViewPost from './pages/ViewPost'
 import AddPost from './pages/AddPost'
+import Login from './pages/Login'
 const router=createBrowserRouter([
   {
-    path:'/',
+    path:'/login',
+    element:<Login />
+  },
+  {
+    
+    path:'/post',
     element:<App />
     
   },

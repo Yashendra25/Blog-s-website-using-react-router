@@ -5,17 +5,19 @@ import { Link } from 'react-router-dom'
 
 export default function PostCard({post}) {
   return (
-    <Card className='card'>
+    <div className='col-md-4 mb-4 d-flex'>
+    <Card className='custom-card flex-grow-1'>
       <Card.Img variant="top" src={post.image} />
-      <Card.Body>
-        <Card.Title>{post.title}</Card.Title>
-        <Card.Text>
+      <Card.Body className='custom-card-body'>
+        <Card.Title className='custom-card-title'>{post.title}</Card.Title>
+        <Card.Text className='custom-card-text'>
           {post.content.slice(0, 100)}...
         </Card.Text>
-        <Link to={`/post/${post.id}`}>
-            <Button variant="primary">View more</Button>
+        <Link to={`/post/${post._id}`}>
+          <Button className='custom-btn-primary'>View more</Button>
         </Link>
       </Card.Body>
     </Card>
+  </div>
   )
 }
